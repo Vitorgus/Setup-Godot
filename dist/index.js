@@ -37,15 +37,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const tc = __importStar(__nccwpck_require__(784));
-// import {wait} from './wait';
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // const ms: string = core.getInput('milliseconds');
-            const godotPath = yield tc.downloadTool('https://downloads.tuxfamily.org/godotengine/3.3.4/Godot_v3.3.4-stable_linux_headless.64.zip');
-            core.info(`Godot donwloaded to ${godotPath}`);
-            // core.info('This is an info message.');
-            // console.log('This is a console.log message');
+            const godotVersion = core.getInput('godot-version');
+            core.startGroup('Here\'s the process.env');
+            core.info(JSON.stringify(process.env));
+            core.endGroup();
+            core.info(`Downloading Godot ${godotVersion}`);
+            const godotPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_linux_headless.64.zip`);
+            core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
             core.info(`The plataform is ${process.platform}`);
             core.setOutput('time', new Date().toTimeString());
         }

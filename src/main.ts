@@ -1,18 +1,20 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-// import {wait} from './wait';
 
 async function run(): Promise<void> {
   try {
-    // const ms: string = core.getInput('milliseconds');
+    const godotVersion: string = core.getInput('godot-version');
+
+    core.startGroup('Here\'s the process.env');
+    core.info(JSON.stringify(process.env));
+    core.endGroup();
+
+    core.info(`Downloading Godot ${godotVersion}`);
 
     const godotPath = await tc.downloadTool(
-      'https://downloads.tuxfamily.org/godotengine/3.3.4/Godot_v3.3.4-stable_linux_headless.64.zip'
+      `https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_linux_headless.64.zip`
     );
-    core.info(`Godot donwloaded to ${godotPath}`);
-
-    // core.info('This is an info message.');
-    // console.log('This is a console.log message');
+    core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
 
     core.info(`The plataform is ${process.platform}`);
 
