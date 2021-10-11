@@ -23,13 +23,19 @@ async function run(): Promise<void> {
     core.info(`Godot ${godotVersion} donwloaded sucessfull!`);
 
     core.info(`Extracting Godot ${godotVersion}`);
-
     const godotExtractPath = await tc.extractZip(godotPath, undefined);
-
     core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
 
-    // core.info(`The plataform is ${process.platform} by process.platform`);
-    // core.info(`The plataform is ${process.env['RUNNER_OS']} by runner os`);
+    core.info('Adding to cache and path');
+    const godotCachedPath = await tc.cacheDir(
+      godotExtractPath,
+      'godot',
+      godotVersion
+    );
+    core.addPath(godotCachedPath);
+    core.info('Done!');
+
+    core.info(`Godot ${godotVersion} is ready to use!`);
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {

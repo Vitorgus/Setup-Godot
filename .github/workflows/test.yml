@@ -27,3 +27,4 @@ jobs:
       - uses: ./
         with:
           godot-version: 3.3.3
+      - run: godot --version
