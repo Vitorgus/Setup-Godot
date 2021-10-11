@@ -36,38 +36,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
-const tc = __importStar(__nccwpck_require__(784));
+const get_tools_1 = __nccwpck_require__(611);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const godotVersion = core.getInput('godot-version');
-            let godotPath = tc.find('godot', godotVersion, process.platform);
-            if (godotPath) {
-                core.info(`Godot ${godotVersion} found in cache! Path: ${godotPath}`);
-            }
-            else {
-                let godot_exec = '';
-                if (process.platform === 'win32') {
-                    core.info(`Attempting to download Godot ${godotVersion} for windows...`);
-                    godot_exec = 'win32.exe';
-                }
-                else if (process.platform === 'linux') {
-                    core.info(`Attempting to download Godot ${godotVersion} headless for linux...`);
-                    godot_exec = 'linux_headless.64';
-                }
-                else {
-                    throw Error(`Unsuported OS: ${process.platform}`);
-                }
-                const godotFileName = `Godot_v${godotVersion}-stable_${godot_exec}`;
-                const godotDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${godotVersion}/${godotFileName}.zip`);
-                core.info(`Godot ${godotVersion} donwload sucessfull!`);
-                core.info(`Attempting to extracting Godot ${godotVersion}`);
-                const godotExtractPath = yield tc.extractZip(godotDownloadPath, undefined);
-                core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
-                core.info('Adding to cache...');
-                godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', godotVersion, process.platform);
-                core.info(`Godot ${godotVersion} cached!`);
-            }
+            const godotPath = yield get_tools_1.getGodot(godotVersion);
             core.info('Adding to path...');
             core.addPath(godotPath);
             core.info(`Godot ${godotVersion} added to path!`);
@@ -5301,6 +5275,64 @@ module.exports = v4;
 
 /***/ }),
 
+/***/ 611:
+/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "getGodot": () => (/* binding */ getGodot)
+/* harmony export */ });
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(186);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(784);
+/* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__);
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+function getGodot(version) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let godotPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('godot', version, process.platform);
+        if (godotPath) {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} found in cache! Path: ${godotPath}`);
+            return godotPath;
+        }
+        let godot_exec = '';
+        if (process.platform === 'win32') {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} for windows...`);
+            godot_exec = 'win32.exe';
+        }
+        else if (process.platform === 'linux') {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} headless for linux...`);
+            godot_exec = 'linux_headless.64';
+        }
+        else {
+            throw Error(`Unsuported OS: ${process.platform}`);
+        }
+        const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
+        const godotDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} donwload sucessfull!`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extracting Godot ${version}`);
+        const godotExtractPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(godotDownloadPath, undefined);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} extracted to ${godotExtractPath}`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Adding to cache...');
+        godotPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', version, process.platform);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} cached!`);
+        return godotPath;
+    });
+}
+
+
+/***/ }),
+
 /***/ 357:
 /***/ ((module) => {
 
@@ -5454,6 +5486,46 @@ module.exports = require("util");
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
