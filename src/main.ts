@@ -1,6 +1,5 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import * as io from '@actions/io';
 
 async function run(): Promise<void> {
   try {
@@ -30,10 +29,6 @@ async function run(): Promise<void> {
     core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
 
     core.info('Adding to cache and path');
-    // await io.mv(
-    //   `${godotExtractPath}/${godotFileName}`,
-    //   `${godotExtractPath}/godot`
-    // );
     const godotCachedPath = await tc.cacheFile(
       `${godotExtractPath}/${godotFileName}`,
       'godot',

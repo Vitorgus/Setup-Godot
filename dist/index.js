@@ -60,10 +60,6 @@ function run() {
             const godotExtractPath = yield tc.extractZip(godotPath, undefined);
             core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
             core.info('Adding to cache and path');
-            // await io.mv(
-            //   `${godotExtractPath}/${godotFileName}`,
-            //   `${godotExtractPath}/godot`
-            // );
             const godotCachedPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', godotVersion, process.platform);
             core.addPath(godotCachedPath);
             core.info('Done!');
