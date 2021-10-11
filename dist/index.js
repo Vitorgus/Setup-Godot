@@ -46,6 +46,7 @@ function run() {
             yield wait_1.wait(parseInt(ms, 10));
             core.debug(new Date().toTimeString());
             core.info('This is an info message.');
+            console.log('This is a console.log message');
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {

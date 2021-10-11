@@ -12,7 +12,8 @@
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "start": "npm run build && INPUT_MILLISECONDS=200 node lib/main.js"
   },
   "repository": {
     "type": "git",
