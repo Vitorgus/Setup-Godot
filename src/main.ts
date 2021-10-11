@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
+import * as io from '@actions/io';
 
 async function run(): Promise<void> {
   try {
@@ -17,8 +18,10 @@ async function run(): Promise<void> {
       throw Error(`Unsuported OS: ${process.platform}`);
     }
 
+    const godotFileName = `Godot_v${godotVersion}-stable_${godot_exec}`;
+
     const godotPath = await tc.downloadTool(
-      `https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_${godot_exec}.zip`
+      `https://downloads.tuxfamily.org/godotengine/${godotVersion}/${godotFileName}.zip`
     );
     core.info(`Godot ${godotVersion} donwloaded sucessfull!`);
 
@@ -27,6 +30,10 @@ async function run(): Promise<void> {
     core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
 
     core.info('Adding to cache and path');
+    await io.mv(
+      `${godotExtractPath}/${godotFileName}`,
+      `${godotExtractPath}/godot`
+    );
     const godotCachedPath = await tc.cacheDir(
       godotExtractPath,
       'godot',
