@@ -5,7 +5,7 @@ async function run(): Promise<void> {
   try {
     const godotVersion: string = core.getInput('godot-version');
 
-    core.startGroup('Here\'s the process.env');
+    core.startGroup("Here's the process.env");
     core.info(JSON.stringify(process.env));
     core.endGroup();
 
@@ -16,7 +16,8 @@ async function run(): Promise<void> {
     );
     core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
 
-    core.info(`The plataform is ${process.platform}`);
+    core.info(`The plataform is ${process.platform} by process.platform`);
+    core.info(`The plataform is ${process.env['RUNNER_OS']} by runner os`);
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {

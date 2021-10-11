@@ -41,13 +41,14 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const godotVersion = core.getInput('godot-version');
-            core.startGroup('Here\'s the process.env');
+            core.startGroup("Here's the process.env");
             core.info(JSON.stringify(process.env));
             core.endGroup();
             core.info(`Downloading Godot ${godotVersion}`);
             const godotPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_linux_headless.64.zip`);
             core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
-            core.info(`The plataform is ${process.platform}`);
+            core.info(`The plataform is ${process.platform} by process.platform`);
+            core.info(`The plataform is ${process.env['RUNNER_OS']} by runner os`);
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {
