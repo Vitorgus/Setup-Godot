@@ -17,7 +17,7 @@ jobs:
           npm install
       - run: |
           npm run all
-  test: # make sure the action works on a clean machine without building
+  run-test: # make sure the action works on a clean machine without building
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -28,3 +28,20 @@ jobs:
         with:
           godot-version: 3.3.3
       - run: godot --version
+  cache-test: # check if it can download multiple godot versions, and if it can find it in cache
+    runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-latest, windows-latest]
+      steps:
+        - uses: actions/checkout@v2
+        - uses: ./
+          with:
+            godot-version: 3.3.3
+        - uses: ./
+          with:
+            godot-version: 3.3.3
+        - uses: ./
+          with:
+            godot-version: 3.3.4
+
