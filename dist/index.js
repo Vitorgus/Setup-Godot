@@ -41,10 +41,6 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const godotVersion = core.getInput('godot-version');
-            // core.startGroup("Here's the process.env");
-            // core.info(JSON.stringify(process.env));
-            // core.endGroup();
-            core.info(`Downloading Godot ${godotVersion}`);
             let godot_exec = '';
             if (process.platform === 'win32') {
                 core.info(`Downloading Godot ${godotVersion} for windows`);
@@ -58,7 +54,10 @@ function run() {
                 throw Error(`Unsuported OS: ${process.platform}`);
             }
             const godotPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_${godot_exec}.zip`);
-            core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
+            core.info(`Godot ${godotVersion} donwloaded sucessfull!`);
+            core.info(`Extracting Godot ${godotVersion}`);
+            const godotExtractPath = yield tc.extractZip(godotPath, undefined);
+            core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
             // core.info(`The plataform is ${process.platform} by process.platform`);
             // core.info(`The plataform is ${process.env['RUNNER_OS']} by runner os`);
             core.setOutput('time', new Date().toTimeString());

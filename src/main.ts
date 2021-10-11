@@ -5,12 +5,6 @@ async function run(): Promise<void> {
   try {
     const godotVersion: string = core.getInput('godot-version');
 
-    // core.startGroup("Here's the process.env");
-    // core.info(JSON.stringify(process.env));
-    // core.endGroup();
-
-    core.info(`Downloading Godot ${godotVersion}`);
-
     let godot_exec = '';
 
     if (process.platform === 'win32') {
@@ -26,7 +20,13 @@ async function run(): Promise<void> {
     const godotPath = await tc.downloadTool(
       `https://downloads.tuxfamily.org/godotengine/${godotVersion}/Godot_v${godotVersion}-stable_${godot_exec}.zip`
     );
-    core.info(`Godot ${godotVersion} donwloaded to ${godotPath}`);
+    core.info(`Godot ${godotVersion} donwloaded sucessfull!`);
+
+    core.info(`Extracting Godot ${godotVersion}`);
+
+    const godotExtractPath = await tc.extractZip(godotPath, undefined);
+
+    core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
 
     // core.info(`The plataform is ${process.platform} by process.platform`);
     // core.info(`The plataform is ${process.env['RUNNER_OS']} by runner os`);
