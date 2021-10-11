@@ -37,7 +37,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const tc = __importStar(__nccwpck_require__(784));
-const io = __importStar(__nccwpck_require__(436));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -61,8 +60,11 @@ function run() {
             const godotExtractPath = yield tc.extractZip(godotPath, undefined);
             core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
             core.info('Adding to cache and path');
-            yield io.mv(`${godotExtractPath}/${godotFileName}`, `${godotExtractPath}/godot`);
-            const godotCachedPath = yield tc.cacheDir(godotExtractPath, 'godot', godotVersion);
+            // await io.mv(
+            //   `${godotExtractPath}/${godotFileName}`,
+            //   `${godotExtractPath}/godot`
+            // );
+            const godotCachedPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', godotVersion, process.platform);
             core.addPath(godotCachedPath);
             core.info('Done!');
             core.info(`Godot ${godotVersion} is ready to use!`);

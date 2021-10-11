@@ -30,14 +30,16 @@ async function run(): Promise<void> {
     core.info(`Godot ${godotVersion} extracted to ${godotExtractPath}`);
 
     core.info('Adding to cache and path');
-    await io.mv(
+    // await io.mv(
+    //   `${godotExtractPath}/${godotFileName}`,
+    //   `${godotExtractPath}/godot`
+    // );
+    const godotCachedPath = await tc.cacheFile(
       `${godotExtractPath}/${godotFileName}`,
-      `${godotExtractPath}/godot`
-    );
-    const godotCachedPath = await tc.cacheDir(
-      godotExtractPath,
       'godot',
-      godotVersion
+      'godot',
+      godotVersion,
+      process.platform
     );
     core.addPath(godotCachedPath);
     core.info('Done!');
