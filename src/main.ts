@@ -10,7 +10,7 @@ async function run(): Promise<void> {
     await wait(parseInt(ms, 10));
     core.debug(new Date().toTimeString());
 
-    core.info('This is an info message!');
+    core.info('This is an info message.');
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
