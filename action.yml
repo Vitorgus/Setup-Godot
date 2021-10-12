@@ -1,6 +1,9 @@
 name: 'Setup Godot'
 description: 'Sets Godot in the Github Actions runner enviroment'
 author: 'Vitorgus'
+branding:
+  icon: 'play'  
+  color: 'blue'
 inputs:
   godot-version:
     required: true
