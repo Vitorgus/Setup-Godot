@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
+import * as io from '@actions/io';
 
 export async function getGodot(version: string): Promise<string> {
   let godotPath = tc.find('godot', version, process.platform);
@@ -50,8 +51,12 @@ export async function getTemplates(version: string): Promise<string> {
   core.info(`Export templates for ${version} donwload sucessfull!`);
 
   core.info(`Attempting to extract templates for ${version}`);
-  templatesPath = await tc.extractZip(templatesDownloadPath, `/home/runner/.local/share/godot/templates/${version}.stable`);
-  core.info(`Export templates for ${version} extracted to ${templatesPath}`);
+  const templatesExtractPath = await tc.extractZip(templatesDownloadPath, undefined);
+  core.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
+
+  templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
+
+  await io.mv(`${templatesExtractPath}/templates`, templatesPath);
 
   // core.info('Adding to cache...');
   // templatesPath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
