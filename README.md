@@ -4,7 +4,7 @@
 
 This actions setus up Godot in the Github Action runner
 
-It downloads and chaches the specified version of the headless Godot executable, and optionally the default export templates
+It downloads and caches the specified version of the headless Godot executable, and optionally the default export templates
 
 **!!! IT ONLY WORKS ON LINUX RUNNERS !!!**
 
