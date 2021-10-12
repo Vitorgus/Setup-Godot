@@ -32,30 +32,32 @@ export async function getGodot(version: string): Promise<string> {
 }
 
 export async function getTemplates(version: string): Promise<string> {
-  let templatesPath = tc.find('templates', version, process.platform);
+  let templatesCachePath = tc.find('templates', version, process.platform);
 
-  if (templatesPath) {
-    core.info(`Export templates ${version} found in cache! Path: ${templatesPath}`);
-    return templatesPath;
+  if (templatesCachePath) {
+    core.info(`Export templates ${version} found in cache! Path: ${templatesCachePath}`);
+  } else {
+    const templatesFileName = `Godot_v${version}-stable_export_templates`;
+
+    core.info(`Attempting to download Godot ${version} export templates...`);
+    const templatesDownloadPath = await tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
+    core.info(`Export templates for ${version} donwload sucessfull!`);
+
+    core.info(`Attempting to extract templates for ${version}`);
+    const templatesExtractPath = await tc.extractZip(templatesDownloadPath, undefined);
+    core.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
+
+    core.info('Adding to cache...');
+    templatesCachePath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
+    core.info(`Export templates for ${version} cached!`);
   }
 
-  const templatesFileName = `Godot_v${version}-stable_export_templates`;
+  const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
 
-  core.info(`Attempting to download Godot ${version} export templates...`);
-  const templatesDownloadPath = await tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
-  core.info(`Export templates for ${version} donwload sucessfull!`);
+  await io.rmRF(templatesPath);
+  await io.cp(`${templatesCachePath}/templates`, templatesPath, {recursive: true});
 
-  core.info(`Attempting to extract templates for ${version}`);
-  const templatesExtractPath = await tc.extractZip(templatesDownloadPath, undefined);
-  core.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
-
-  templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
-
-  await io.mv(`${templatesExtractPath}/templates`, templatesPath);
-
-  // core.info('Adding to cache...');
-  // templatesPath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
-  // core.info(`Export templates for ${version} cached!`);
+  core.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
 
   return templatesPath;
 }
