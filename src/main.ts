@@ -16,14 +16,11 @@ async function run(): Promise<void> {
 
     const templates: string = core.getInput('download-templates');
 
-    let templatesPath = '';
-
     if (templates) {
-      templatesPath = await getTemplates(godotVersion);
+      await getTemplates(godotVersion);
     }
 
     // core.setOutput('time', new Date().toTimeString());
-    core.setOutput('templates', templatesPath);
 
     core.info(`Godot ${godotVersion} is ready to use!`);
   } catch (error) {

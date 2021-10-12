@@ -49,12 +49,10 @@ function run() {
             core.addPath(godotPath);
             core.info(`Godot ${godotVersion} added to path!`);
             const templates = core.getInput('download-templates');
-            let templatesPath = '';
             if (templates) {
-                templatesPath = yield get_tools_1.getTemplates(godotVersion);
+                yield get_tools_1.getTemplates(godotVersion);
             }
             // core.setOutput('time', new Date().toTimeString());
-            core.setOutput('templates', templatesPath);
             core.info(`Godot ${godotVersion} is ready to use!`);
         }
         catch (error) {
@@ -5355,7 +5353,6 @@ function getTemplates(version) {
         yield _actions_io__WEBPACK_IMPORTED_MODULE_2__.rmRF(templatesPath);
         yield _actions_io__WEBPACK_IMPORTED_MODULE_2__.cp(`${templatesCachePath}/templates`, templatesPath, { recursive: true });
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
-        return templatesPath;
     });
 }
 

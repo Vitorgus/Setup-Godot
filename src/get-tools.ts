@@ -31,7 +31,7 @@ export async function getGodot(version: string): Promise<string> {
   return godotPath;
 }
 
-export async function getTemplates(version: string): Promise<string> {
+export async function getTemplates(version: string): Promise<void> {
   let templatesCachePath = tc.find('templates', version, process.platform);
 
   if (templatesCachePath) {
@@ -58,6 +58,4 @@ export async function getTemplates(version: string): Promise<string> {
   await io.cp(`${templatesCachePath}/templates`, templatesPath, {recursive: true});
 
   core.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
-
-  return templatesPath;
 }

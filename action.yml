@@ -10,9 +10,6 @@ inputs:
     required: false
     description: 'If it should also download and cache the export templates'
     default: true
-outputs:
-  templates: # id of output
-    description: 'Path to the export templates if downloaded, or an empty string if download-templates is set to false'
 runs:
   using: 'node12'
   main: 'dist/index.js'
