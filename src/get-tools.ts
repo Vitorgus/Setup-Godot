@@ -12,13 +12,8 @@ export async function getGodot(version: string): Promise<string> {
 
   let godot_exec = '';
 
-  if (process.platform === 'win32') {
-    core.info(`Attempting to download Godot ${version} for windows...`);
-    godot_exec = 'win32.exe';
-  } else if (process.platform === 'linux') {
-    core.info(`Attempting to download Godot ${version} headless for linux...`);
-    godot_exec = 'linux_headless.64';
-  }
+  core.info(`Attempting to download Godot ${version} headless for linux...`);
+  godot_exec = 'linux_headless.64';
 
   const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
 

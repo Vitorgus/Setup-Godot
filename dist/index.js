@@ -40,8 +40,8 @@ const get_tools_1 = __nccwpck_require__(611);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (process.platform !== 'win32' && process.platform !== 'linux') {
-                throw Error(`Unsuported OS: ${process.platform}`);
+            if (process.platform !== 'linux') {
+                throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
             }
             const godotVersion = core.getInput('godot-version');
             const godotPath = yield get_tools_1.getGodot(godotVersion);
@@ -5319,14 +5319,8 @@ function getGodot(version) {
             return godotPath;
         }
         let godot_exec = '';
-        if (process.platform === 'win32') {
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} for windows...`);
-            godot_exec = 'win32.exe';
-        }
-        else if (process.platform === 'linux') {
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} headless for linux...`);
-            godot_exec = 'linux_headless.64';
-        }
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} headless for linux...`);
+        godot_exec = 'linux_headless.64';
         const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
         const godotDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} donwload sucessfull!`);
