@@ -17,8 +17,6 @@ export async function getGodot(version: string): Promise<string> {
   } else if (process.platform === 'linux') {
     core.info(`Attempting to download Godot ${version} headless for linux...`);
     godot_exec = 'linux_headless.64';
-  } else {
-    throw Error(`Unsuported OS: ${process.platform}`);
   }
 
   const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
@@ -52,7 +50,7 @@ export async function getTemplates(version: string): Promise<string> {
   core.info(`Export templates for ${version} donwload sucessfull!`);
 
   core.info(`Attempting to extract templates for ${version}`);
-  templatesPath = await tc.extractZip(templatesDownloadPath, `~/.local/share/godot/templates/${version}.stable`);
+  templatesPath = await tc.extractZip(templatesDownloadPath, `/home/runner/.local/share/godot/templates/${version}.stable`);
   core.info(`Export templates for ${version} extracted to ${templatesPath}`);
 
   // core.info('Adding to cache...');

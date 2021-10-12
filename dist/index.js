@@ -40,6 +40,9 @@ const get_tools_1 = __nccwpck_require__(611);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            if (process.platform !== 'win32' && process.platform !== 'linux') {
+                throw Error(`Unsuported OS: ${process.platform}`);
+            }
             const godotVersion = core.getInput('godot-version');
             const godotPath = yield get_tools_1.getGodot(godotVersion);
             core.info('Adding to path...');
@@ -5321,9 +5324,6 @@ function getGodot(version) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} headless for linux...`);
             godot_exec = 'linux_headless.64';
         }
-        else {
-            throw Error(`Unsuported OS: ${process.platform}`);
-        }
         const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
         const godotDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} donwload sucessfull!`);
@@ -5348,7 +5348,7 @@ function getTemplates(version) {
         const templatesDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} donwload sucessfull!`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract templates for ${version}`);
-        templatesPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(templatesDownloadPath, `~/.local/share/godot/templates/${version}.stable`);
+        templatesPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(templatesDownloadPath, `/home/runner/.local/share/godot/templates/${version}.stable`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} extracted to ${templatesPath}`);
         // core.info('Adding to cache...');
         // templatesPath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);

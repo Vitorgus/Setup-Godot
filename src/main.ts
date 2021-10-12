@@ -3,6 +3,9 @@ import {getGodot, getTemplates} from 'get-tools';
 
 async function run(): Promise<void> {
   try {
+    if (process.platform !== 'win32' && process.platform !== 'linux') {
+      throw Error(`Unsuported OS: ${process.platform}`);
+    }
     const godotVersion: string = core.getInput('godot-version');
 
     const godotPath = await getGodot(godotVersion);
