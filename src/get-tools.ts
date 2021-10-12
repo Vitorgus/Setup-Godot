@@ -45,7 +45,7 @@ export async function getTemplates(version: string): Promise<string> {
     return templatesPath;
   }
 
-  const templatesFileName = `templates_v${version}-stable_export_templates.tpz`;
+  const templatesFileName = `Godot_v${version}-stable_export_templates.tpz`;
 
   const templatesDownloadPath = await tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
   core.info(`Export templates for ${version} donwload sucessfull!`);

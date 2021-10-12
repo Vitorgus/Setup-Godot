@@ -45,7 +45,6 @@ function run() {
             core.info('Adding to path...');
             core.addPath(godotPath);
             core.info(`Godot ${godotVersion} added to path!`);
-            core.info(`Godot ${godotVersion} is ready to use!`);
             const templates = core.getInput('download-templates');
             let templatesPath = '';
             if (templates) {
@@ -53,6 +52,7 @@ function run() {
             }
             // core.setOutput('time', new Date().toTimeString());
             core.setOutput('templates', templatesPath);
+            core.info(`Godot ${godotVersion} is ready to use!`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -5343,7 +5343,7 @@ function getTemplates(version) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates ${version} found in cache! Path: ${templatesPath}`);
             return templatesPath;
         }
-        const templatesFileName = `templates_v${version}-stable_export_templates.tpz`;
+        const templatesFileName = `Godot_v${version}-stable_export_templates.tpz`;
         const templatesDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} donwload sucessfull!`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract templates for ${version}`);

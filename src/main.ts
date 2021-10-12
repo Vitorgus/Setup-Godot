@@ -11,8 +11,6 @@ async function run(): Promise<void> {
     core.addPath(godotPath);
     core.info(`Godot ${godotVersion} added to path!`);
 
-    core.info(`Godot ${godotVersion} is ready to use!`);
-
     const templates: string = core.getInput('download-templates');
 
     let templatesPath = '';
@@ -23,6 +21,8 @@ async function run(): Promise<void> {
 
     // core.setOutput('time', new Date().toTimeString());
     core.setOutput('templates', templatesPath);
+
+    core.info(`Godot ${godotVersion} is ready to use!`);
   } catch (error) {
     core.setFailed(error.message);
   }
