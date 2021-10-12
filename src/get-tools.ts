@@ -32,7 +32,7 @@ export async function getGodot(version: string): Promise<string> {
 }
 
 export async function getTemplates(version: string): Promise<void> {
-  let templatesCachePath = tc.find("templates", version, process.platform);
+  let templatesCachePath = tc.find("godot-export-templates", version, process.platform);
 
   if (templatesCachePath) {
     core.info(`Export templates ${version} found in cache! Path: ${templatesCachePath}`);
@@ -48,14 +48,14 @@ export async function getTemplates(version: string): Promise<void> {
     core.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
 
     core.info("Adding to cache...");
-    templatesCachePath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, "templates", "templates", version, process.platform);
+    templatesCachePath = await tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", version, process.platform);
     core.info(`Export templates for ${version} cached!`);
   }
 
   const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
 
   await io.rmRF(templatesPath);
-  await io.cp(`${templatesCachePath}/templates`, templatesPath, { recursive: true });
+  await io.cp(templatesCachePath, templatesPath, { recursive: true });
 
   core.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
 }

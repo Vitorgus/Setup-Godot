@@ -5333,7 +5333,7 @@ function getGodot(version) {
 }
 function getTemplates(version) {
     return __awaiter(this, void 0, void 0, function* () {
-        let templatesCachePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find("templates", version, process.platform);
+        let templatesCachePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find("godot-export-templates", version, process.platform);
         if (templatesCachePath) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates ${version} found in cache! Path: ${templatesCachePath}`);
         }
@@ -5346,12 +5346,12 @@ function getTemplates(version) {
             const templatesExtractPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(templatesDownloadPath, undefined);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Adding to cache...");
-            templatesCachePath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${templatesExtractPath}/${templatesFileName}`, "templates", "templates", version, process.platform);
+            templatesCachePath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", version, process.platform);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} cached!`);
         }
         const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
         yield _actions_io__WEBPACK_IMPORTED_MODULE_2__.rmRF(templatesPath);
-        yield _actions_io__WEBPACK_IMPORTED_MODULE_2__.cp(`${templatesCachePath}/templates`, templatesPath, { recursive: true });
+        yield _actions_io__WEBPACK_IMPORTED_MODULE_2__.cp(templatesCachePath, templatesPath, { recursive: true });
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
     });
 }
