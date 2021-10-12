@@ -40,15 +40,15 @@ const get_tools_1 = __nccwpck_require__(611);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (process.platform !== 'linux') {
+            if (process.platform !== "linux") {
                 throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
             }
-            const godotVersion = core.getInput('godot-version');
+            const godotVersion = core.getInput("godot-version");
             const godotPath = yield get_tools_1.getGodot(godotVersion);
-            core.info('Adding to path...');
+            core.info("Adding to path...");
             core.addPath(godotPath);
             core.info(`Godot ${godotVersion} added to path!`);
-            const templates = core.getInput('download-templates');
+            const templates = core.getInput("download-templates");
             if (templates) {
                 yield get_tools_1.getTemplates(godotVersion);
             }
@@ -5311,29 +5311,29 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 function getGodot(version) {
     return __awaiter(this, void 0, void 0, function* () {
-        let godotPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('godot', version, process.platform);
+        let godotPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find("godot", version, process.platform);
         if (godotPath) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} found in cache! Path: ${godotPath}`);
             return godotPath;
         }
-        let godot_exec = '';
+        let godot_exec = "";
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to download Godot ${version} headless for linux...`);
-        godot_exec = 'linux_headless.64';
+        godot_exec = "linux_headless.64";
         const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
         const godotDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} donwload sucessfull!`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract Godot ${version}`);
         const godotExtractPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(godotDownloadPath, undefined);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} extracted to ${godotExtractPath}`);
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Adding to cache...');
-        godotPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', version, process.platform);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Adding to cache...");
+        godotPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", version, process.platform);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} cached!`);
         return godotPath;
     });
 }
 function getTemplates(version) {
     return __awaiter(this, void 0, void 0, function* () {
-        let templatesCachePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('templates', version, process.platform);
+        let templatesCachePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find("templates", version, process.platform);
         if (templatesCachePath) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates ${version} found in cache! Path: ${templatesCachePath}`);
         }
@@ -5345,8 +5345,8 @@ function getTemplates(version) {
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract templates for ${version}`);
             const templatesExtractPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(templatesDownloadPath, undefined);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Adding to cache...');
-            templatesCachePath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Adding to cache...");
+            templatesCachePath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${templatesExtractPath}/${templatesFileName}`, "templates", "templates", version, process.platform);
             _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} cached!`);
         }
         const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
