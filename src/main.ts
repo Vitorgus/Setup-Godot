@@ -23,7 +23,8 @@ async function run(): Promise<void> {
     // core.setOutput('time', new Date().toTimeString());
 
     core.info(`Godot ${godotVersion} is ready to use!`);
-  } catch (error) {
+  } catch (e) {
+    const error = e as Error;
     core.setFailed(error.message);
   }
 }
