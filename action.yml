@@ -1,11 +1,11 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Godot'
+description: 'Sets Godot in the Github Actions runner enviroment'
+author: 'Vitorgus'
 inputs:
-  godot-version: # specify the godot version
+  godot-version:
     required: true
     description: 'Godot version to download'
-  download-templates: # if it should download the export templates as well
+  download-templates:
     required: false
     description: 'If it should also download and cache the export templates'
     default: true
