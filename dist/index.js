@@ -44,6 +44,10 @@ function run() {
                 throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
             }
             const godotVersion = core.getInput("godot-version");
+            const versionRegex = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
+            if (!versionRegex.test(godotVersion)) {
+                throw Error(`INVALID VERSION: ${godotVersion} is not a valid version number`);
+            }
             const godotPath = yield (0, get_tools_1.getGodot)(godotVersion);
             core.info("Adding to path...");
             core.addPath(godotPath);

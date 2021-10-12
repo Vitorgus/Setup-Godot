@@ -6,7 +6,14 @@ async function run(): Promise<void> {
     if (process.platform !== "linux") {
       throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
     }
+
     const godotVersion: string = core.getInput("godot-version");
+
+    const versionRegex = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
+
+    if (!versionRegex.test(godotVersion)) {
+      throw Error(`INVALID VERSION: ${godotVersion} is not a valid version number`);
+    }
 
     const godotPath = await getGodot(godotVersion);
 
