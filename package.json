@@ -11,7 +11,9 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test",
+    "prepare": "is-ci || husky install",
+    "start": "npm run build && INPUT_MILLISECONDS=200 node lib/main.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.4.0"
+    "@actions/core": "^1.4.0",
+    "@actions/io": "^1.1.1",
+    "@actions/tool-cache": "^1.7.1"
   },
   "devDependencies": {
     "@types/node": "^16.3.3",
@@ -34,6 +38,9 @@
     "eslint": "^7.32.0",
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^25.0.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.2",
+    "is-ci": "^3.0.0",
     "jest": "^27.0.6",
     "js-yaml": "^4.1.0",
     "prettier": "2.2.1",

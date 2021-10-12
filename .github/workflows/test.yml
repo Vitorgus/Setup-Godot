@@ -1,9 +1,11 @@
 name: 'build-test'
 on: # rebuild any PRs and main branch changes
+  workflow_dispatch:
   pull_request:
   push:
     branches:
       - main
+      - dev
       - 'releases/*'
 
 jobs:
@@ -19,6 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./
+      - name: Run test
+        uses: ./
         with:
-          milliseconds: 1000
+          godot-version: 3.3.3
+      - name: Cache test
+        uses: ./
+        with:
+          godot-version: 3.3.3
+      - run: godot --test 'string'

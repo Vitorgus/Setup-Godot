@@ -1,17 +1,37 @@
-import * as core from '@actions/core';
-import {wait} from './wait';
+import * as core from "@actions/core";
+import { getGodot, getTemplates } from "get-tools";
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds');
-    core.debug(`Waiting ${ms} milliseconds ...`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    if (process.platform !== "linux") {
+      throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
+    }
 
-    core.debug(new Date().toTimeString());
-    await wait(parseInt(ms, 10));
-    core.debug(new Date().toTimeString());
+    const godotVersion: string = core.getInput("godot-version");
 
-    core.setOutput('time', new Date().toTimeString());
-  } catch (error) {
+    const versionRegex = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
+
+    if (!versionRegex.test(godotVersion)) {
+      throw Error(`INVALID VERSION: ${godotVersion} is not a valid version number`);
+    }
+
+    const godotPath = await getGodot(godotVersion);
+
+    core.info("Adding to path...");
+    core.addPath(godotPath);
+    core.info(`Godot ${godotVersion} added to path!`);
+
+    const templates: string = core.getInput("download-templates");
+
+    if (templates) {
+      await getTemplates(godotVersion);
+    }
+
+    // core.setOutput('time', new Date().toTimeString());
+
+    core.info(`Godot ${godotVersion} is ready to use!`);
+  } catch (e) {
+    const error = e as Error;
     core.setFailed(error.message);
   }
 }
