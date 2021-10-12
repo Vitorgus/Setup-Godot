@@ -46,7 +46,13 @@ function run() {
             core.addPath(godotPath);
             core.info(`Godot ${godotVersion} added to path!`);
             core.info(`Godot ${godotVersion} is ready to use!`);
-            core.setOutput('time', new Date().toTimeString());
+            const templates = core.getInput('download-templates');
+            let templatesPath = '';
+            if (templates) {
+                templatesPath = yield get_tools_1.getTemplates(godotVersion);
+            }
+            // core.setOutput('time', new Date().toTimeString());
+            core.setOutput('templates', templatesPath);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -5281,7 +5287,8 @@ module.exports = v4;
 "use strict";
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "getGodot": () => (/* binding */ getGodot)
+/* harmony export */   "getGodot": () => (/* binding */ getGodot),
+/* harmony export */   "getTemplates": () => (/* binding */ getTemplates)
 /* harmony export */ });
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(186);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
@@ -5320,13 +5327,32 @@ function getGodot(version) {
         const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
         const godotDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} donwload sucessfull!`);
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extracting Godot ${version}`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract Godot ${version}`);
         const godotExtractPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(godotDownloadPath, undefined);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} extracted to ${godotExtractPath}`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('Adding to cache...');
         godotPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheFile(`${godotExtractPath}/${godotFileName}`, 'godot', 'godot', version, process.platform);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Godot ${version} cached!`);
         return godotPath;
+    });
+}
+function getTemplates(version) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let templatesPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('templates', version, process.platform);
+        if (templatesPath) {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates ${version} found in cache! Path: ${templatesPath}`);
+            return templatesPath;
+        }
+        const templatesFileName = `templates_v${version}-stable_export_templates.tpz`;
+        const templatesDownloadPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} donwload sucessfull!`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Attempting to extract templates for ${version}`);
+        templatesPath = yield _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(templatesDownloadPath, `~/.local/share/godot/templates/${version}.stable`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Export templates for ${version} extracted to ${templatesPath}`);
+        // core.info('Adding to cache...');
+        // templatesPath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
+        // core.info(`Export templates for ${version} cached!`);
+        return templatesPath;
     });
 }
 

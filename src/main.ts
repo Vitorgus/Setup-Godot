@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import {getGodot} from 'get-tools';
+import {getGodot, getTemplates} from 'get-tools';
 
 async function run(): Promise<void> {
   try {
@@ -13,7 +13,16 @@ async function run(): Promise<void> {
 
     core.info(`Godot ${godotVersion} is ready to use!`);
 
-    core.setOutput('time', new Date().toTimeString());
+    const templates: string = core.getInput('download-templates');
+
+    let templatesPath = '';
+
+    if (templates) {
+      templatesPath = await getTemplates(godotVersion);
+    }
+
+    // core.setOutput('time', new Date().toTimeString());
+    core.setOutput('templates', templatesPath);
   } catch (error) {
     core.setFailed(error.message);
   }

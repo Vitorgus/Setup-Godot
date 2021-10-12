@@ -2,10 +2,17 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  godot-version: # change this
+  godot-version: # specify the godot version
     required: true
     description: 'Godot version to download'
     default: '3.3.4'
+  download-templates: # if it should download the export templates as well
+    required: false
+    description: 'If it should also download and cache the export templates'
+    default: true
+outputs:
+  templates: # id of output
+    description: 'Path to the export templates if downloaded, or an empty string if download-templates is set to false'
 runs:
   using: 'node12'
   main: 'dist/index.js'

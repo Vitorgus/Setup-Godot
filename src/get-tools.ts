@@ -26,7 +26,7 @@ export async function getGodot(version: string): Promise<string> {
   const godotDownloadPath = await tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
   core.info(`Godot ${version} donwload sucessfull!`);
 
-  core.info(`Attempting to extracting Godot ${version}`);
+  core.info(`Attempting to extract Godot ${version}`);
   const godotExtractPath = await tc.extractZip(godotDownloadPath, undefined);
   core.info(`Godot ${version} extracted to ${godotExtractPath}`);
 
@@ -35,4 +35,28 @@ export async function getGodot(version: string): Promise<string> {
   core.info(`Godot ${version} cached!`);
 
   return godotPath;
+}
+
+export async function getTemplates(version: string): Promise<string> {
+  let templatesPath = tc.find('templates', version, process.platform);
+
+  if (templatesPath) {
+    core.info(`Export templates ${version} found in cache! Path: ${templatesPath}`);
+    return templatesPath;
+  }
+
+  const templatesFileName = `templates_v${version}-stable_export_templates.tpz`;
+
+  const templatesDownloadPath = await tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
+  core.info(`Export templates for ${version} donwload sucessfull!`);
+
+  core.info(`Attempting to extract templates for ${version}`);
+  templatesPath = await tc.extractZip(templatesDownloadPath, `~/.local/share/godot/templates/${version}.stable`);
+  core.info(`Export templates for ${version} extracted to ${templatesPath}`);
+
+  // core.info('Adding to cache...');
+  // templatesPath = await tc.cacheFile(`${templatesExtractPath}/${templatesFileName}`, 'templates', 'templates', version, process.platform);
+  // core.info(`Export templates for ${version} cached!`);
+
+  return templatesPath;
 }
