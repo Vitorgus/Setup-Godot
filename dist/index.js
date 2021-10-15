@@ -5531,8 +5531,8 @@ function getGodot(version, mono) {
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
         if (mono) {
-            yield io.mv(`${godotExtractPath}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/godot`);
-            godotPath = yield tc.cacheDir(godotExtractPath, "godot", godotCacheVersion, process.platform);
+            yield io.mv(`${godotExtractPath}/${godotFileName}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/${godotFileName}/godot`);
+            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion, process.platform);
         }
         else {
             godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
