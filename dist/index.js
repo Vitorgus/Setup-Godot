@@ -5523,7 +5523,7 @@ function getGodot(version, mono) {
             return godotPath;
         }
         core.info(`Attempting to download ${godotLabel} headless for linux...`);
-        const godotFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}linux_headless.64`;
+        const godotFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}linux_headless${mono ? "_" : "."}64`;
         const godotDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${godotFileName}.zip`);
         core.info(`${godotLabel} donwload sucessfull!`);
         core.info(`Attempting to extract ${godotLabel}`);
