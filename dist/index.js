@@ -53,11 +53,11 @@ function run() {
             const godotPath = yield (0, get_tools_1.getGodot)(godotVersion, isMono);
             core.info("Adding to path...");
             core.addPath(godotPath);
-            core.info(`Godot ${godotVersion} added to path!`);
+            core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} added to path!`);
             if (templates) {
                 yield (0, get_tools_1.getTemplates)(godotVersion, isMono);
             }
-            core.info(`Godot ${godotVersion} is ready to use!`);
+            core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} is ready to use!`);
         }
         catch (e) {
             const error = e;
@@ -5530,7 +5530,13 @@ function getGodot(version, mono) {
         const godotExtractPath = yield tc.extractZip(godotDownloadPath, undefined);
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
-        godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+        if (mono) {
+            yield io.mv(`${godotExtractPath}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/godot`);
+            godotPath = yield tc.cacheDir(godotExtractPath, "godot", godotCacheVersion, process.platform);
+        }
+        else {
+            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+        }
         core.info(`${godotLabel} cached!`);
         return godotPath;
     });

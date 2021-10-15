@@ -25,7 +25,13 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   core.info(`${godotLabel} extracted to ${godotExtractPath}`);
 
   core.info("Adding to cache...");
-  godotPath = await tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+  if (mono) {
+    await io.mv(`${godotExtractPath}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/godot`);
+    godotPath = await tc.cacheDir(godotExtractPath, "godot", godotCacheVersion, process.platform);
+  } else {
+    godotPath = await tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+  }
+
   core.info(`${godotLabel} cached!`);
 
   return godotPath;

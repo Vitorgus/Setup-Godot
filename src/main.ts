@@ -21,13 +21,13 @@ async function run(): Promise<void> {
 
     core.info("Adding to path...");
     core.addPath(godotPath);
-    core.info(`Godot ${godotVersion} added to path!`);
+    core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} added to path!`);
 
     if (templates) {
       await getTemplates(godotVersion, isMono);
     }
 
-    core.info(`Godot ${godotVersion} is ready to use!`);
+    core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} is ready to use!`);
   } catch (e) {
     const error = e as Error;
     core.setFailed(error.message);
