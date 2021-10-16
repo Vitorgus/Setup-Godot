@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
-import { getGodot, getTemplates } from "get-tools";
+import { getGodot, getTemplates } from "./get-tools";
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     if (process.platform !== "linux") {
       throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
