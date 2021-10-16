@@ -5,18 +5,20 @@
     "parserOptions": {
       "ecmaVersion": 9,
       "sourceType": "module",
-      "project": "./tsconfig.json"
+      "project": "./tsconfig.eslint.json"
     },
     "rules": {
       "no-console": ["error", { "allow": ["log"] }],
-      "eslint-comments/no-use": "off",
       "no-unused-vars": "off",
       "camelcase": "off",
       "prefer-template": "off",
       "sort-imports": "off",
+      "semi": "off",
       "i18n-text/no-en": "off",
       "import/no-namespace": "off",
       "import/no-unresolved": "off",
+      "filenames/match-regex":  ["error", "^[a-z0-9-]+((.d)?|(.test)?)$"],
+      "eslint-comments/no-use": "off",
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
       "@typescript-eslint/no-require-imports": "error",
@@ -46,7 +48,6 @@
       "@typescript-eslint/promise-function-async": "error",
       "@typescript-eslint/require-array-sort-compare": "error",
       "@typescript-eslint/restrict-plus-operands": "error",
-      "semi": "off",
       "@typescript-eslint/semi": ["error", "always"],
       "@typescript-eslint/type-annotation-spacing": "error",
       "@typescript-eslint/unbound-method": "error"
