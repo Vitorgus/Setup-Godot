@@ -8,9 +8,13 @@ inputs:
   godot-version:
     required: true
     description: 'Godot version to download'
+  mono:
+    required: false
+    description: 'If set to true, will download de mono version of Godot'
+    default: false
   download-templates:
     required: false
-    description: 'If it should also download and cache the export templates'
+    description: 'If set to false, will skip the default export templates download'
     default: true
 runs:
   using: 'node12'

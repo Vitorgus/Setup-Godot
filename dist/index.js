@@ -1,6 +1,104 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 705:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getTemplates = exports.getGodot = void 0;
+const core = __importStar(__nccwpck_require__(186));
+const tc = __importStar(__nccwpck_require__(784));
+const io = __importStar(__nccwpck_require__(436));
+function getGodot(version, mono) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const godotLabel = "Godot " + version + (mono ? " Mono" : "");
+        const godotCacheVersion = version + (mono ? "-mono" : "");
+        let godotPath = tc.find("godot", godotCacheVersion, process.platform);
+        if (godotPath) {
+            core.info(`${godotLabel} found in cache! Path: ${godotPath}`);
+            return godotPath;
+        }
+        core.info(`Attempting to download ${godotLabel} headless for linux...`);
+        const godotFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}linux_headless${mono ? "_" : "."}64`;
+        const godotDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${godotFileName}.zip`);
+        core.info(`${godotLabel} donwload sucessfull!`);
+        core.info(`Attempting to extract ${godotLabel}`);
+        const godotExtractPath = yield tc.extractZip(godotDownloadPath, undefined);
+        core.info(`${godotLabel} extracted to ${godotExtractPath}`);
+        core.info("Adding to cache...");
+        if (mono) {
+            yield io.mv(`${godotExtractPath}/${godotFileName}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/${godotFileName}/godot`);
+            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion, process.platform);
+        }
+        else {
+            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+        }
+        core.info(`${godotLabel} cached!`);
+        return godotPath;
+    });
+}
+exports.getGodot = getGodot;
+function getTemplates(version, mono) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const templatesLabel = "Export Templates for " + version + (mono ? " Mono" : "");
+        const tenplatesCacheVersion = version + (mono ? "-mono" : "");
+        let templatesCachePath = tc.find("godot-export-templates", tenplatesCacheVersion, process.platform);
+        if (templatesCachePath) {
+            core.info(`${templatesLabel} found in cache! Path: ${templatesCachePath}`);
+        }
+        else {
+            const templatesFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}export_templates`;
+            core.info(`Attempting to download ${templatesLabel} export templates...`);
+            const templatesDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`);
+            core.info(`${templatesLabel} donwload sucessfull!`);
+            core.info(`Attempting to extract ${templatesLabel}`);
+            const templatesExtractPath = yield tc.extractZip(templatesDownloadPath, undefined);
+            core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
+            core.info("Adding to cache...");
+            templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion, process.platform);
+            core.info(`${templatesLabel} cached!`);
+        }
+        const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable${mono ? ".mono" : ""}`;
+        yield io.rmRF(templatesPath);
+        yield io.cp(templatesCachePath, templatesPath, { recursive: true });
+        core.info(`${templatesLabel} copied to folder ${templatesPath}!`);
+    });
+}
+exports.getTemplates = getTemplates;
+
+
+/***/ }),
+
 /***/ 109:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -35,29 +133,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 const core = __importStar(__nccwpck_require__(186));
-const get_tools_1 = __nccwpck_require__(611);
+const get_tools_1 = __nccwpck_require__(705);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (process.platform !== "linux") {
                 throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
             }
-            const godotVersion = core.getInput("godot-version");
+            const godotVersion = core.getInput("godot-version", { required: true });
+            const isMono = core.getBooleanInput("mono", { required: false });
+            const templates = core.getBooleanInput("download-templates", { required: false });
             const versionRegex = /^\d{1,2}\.\d{1,2}(\.\d{1,2})?$/;
             if (!versionRegex.test(godotVersion)) {
                 throw Error(`INVALID VERSION: ${godotVersion} is not a valid version number`);
             }
-            const godotPath = yield (0, get_tools_1.getGodot)(godotVersion);
+            const godotPath = yield (0, get_tools_1.getGodot)(godotVersion, isMono);
             core.info("Adding to path...");
             core.addPath(godotPath);
-            core.info(`Godot ${godotVersion} added to path!`);
-            const templates = core.getInput("download-templates");
+            core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} added to path!`);
             if (templates) {
-                yield (0, get_tools_1.getTemplates)(godotVersion);
+                yield (0, get_tools_1.getTemplates)(godotVersion, isMono);
             }
-            // core.setOutput('time', new Date().toTimeString());
-            core.info(`Godot ${godotVersion} is ready to use!`);
+            core.info(`Godot ${godotVersion}${isMono ? " Mono" : ""} is ready to use!`);
         }
         catch (e) {
             const error = e;
@@ -65,6 +164,7 @@ function run() {
         }
     });
 }
+exports.run = run;
 run();
 
 
@@ -5471,96 +5571,6 @@ function v4(options, buf, offset) {
 }
 
 module.exports = v4;
-
-
-/***/ }),
-
-/***/ 611:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getTemplates = exports.getGodot = void 0;
-const core = __importStar(__nccwpck_require__(186));
-const tc = __importStar(__nccwpck_require__(784));
-const io = __importStar(__nccwpck_require__(436));
-function getGodot(version) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let godotPath = tc.find("godot", version, process.platform);
-        if (godotPath) {
-            core.info(`Godot ${version} found in cache! Path: ${godotPath}`);
-            return godotPath;
-        }
-        let godot_exec = "";
-        core.info(`Attempting to download Godot ${version} headless for linux...`);
-        godot_exec = "linux_headless.64";
-        const godotFileName = `Godot_v${version}-stable_${godot_exec}`;
-        const godotDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${godotFileName}.zip`);
-        core.info(`Godot ${version} donwload sucessfull!`);
-        core.info(`Attempting to extract Godot ${version}`);
-        const godotExtractPath = yield tc.extractZip(godotDownloadPath, undefined);
-        core.info(`Godot ${version} extracted to ${godotExtractPath}`);
-        core.info("Adding to cache...");
-        godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", version, process.platform);
-        core.info(`Godot ${version} cached!`);
-        return godotPath;
-    });
-}
-exports.getGodot = getGodot;
-function getTemplates(version) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let templatesCachePath = tc.find("godot-export-templates", version, process.platform);
-        if (templatesCachePath) {
-            core.info(`Export templates ${version} found in cache! Path: ${templatesCachePath}`);
-        }
-        else {
-            const templatesFileName = `Godot_v${version}-stable_export_templates`;
-            core.info(`Attempting to download Godot ${version} export templates...`);
-            const templatesDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${templatesFileName}.tpz`);
-            core.info(`Export templates for ${version} donwload sucessfull!`);
-            core.info(`Attempting to extract templates for ${version}`);
-            const templatesExtractPath = yield tc.extractZip(templatesDownloadPath, undefined);
-            core.info(`Export templates for ${version} extracted to ${templatesExtractPath}`);
-            core.info("Adding to cache...");
-            templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", version, process.platform);
-            core.info(`Export templates for ${version} cached!`);
-        }
-        const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable`;
-        yield io.rmRF(templatesPath);
-        yield io.cp(templatesCachePath, templatesPath, { recursive: true });
-        core.info(`Export templates for ${version} copied to folder ${templatesPath}!`);
-    });
-}
-exports.getTemplates = getTemplates;
 
 
 /***/ }),
