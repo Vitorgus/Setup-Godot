@@ -41,6 +41,12 @@ If the actions should also download Godot's default export templates
 
 Default Value: `true`
 
+### mono `optional`
+
+If the version of godot to setup should be the mono version for C# projects. If false, will download the standard version.
+
+Default Value: `false`
+
 
 ## Why linux only?
 
