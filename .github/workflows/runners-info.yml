@@ -1,0 +1,18 @@
+name: Github Runners Info
+
+on:
+  workflow_dispatch:
+
+jobs:
+  info:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Display Info
+        run: |
+          node -e "console.log(`Platform = ${process.plataform}`)"
+          node -e "console.log(`Arch = ${process.arch}`)"
