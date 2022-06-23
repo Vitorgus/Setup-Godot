@@ -1,0 +1,31 @@
+name: 'Test For Specified Version'
+on:
+  workflow_dispatch:
+    inputs:
+      godotVersion:
+        description: 'Godot Version'
+        required: true
+        type: string
+        default: '3.3.4'
+      mono:
+        description: 'Use mono version?'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  test-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run test
+        uses: ./
+        with:
+          godot-version: ${{ inputs.godotVersion }}
+          mono: ${{ inputs.mono }}
+      - name: Cache test
+        uses: ./
+        with:
+          godot-version: ${{ inputs.godotVersion }}
+          mono: ${{ inputs.mono }}
+      - run: godot --test 'string'
