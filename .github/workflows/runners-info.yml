@@ -14,5 +14,5 @@ jobs:
     steps:
       - name: Display Info
         run: |
-          node -e "console.log(`Platform = ${process.platform}`)"
-          node -e "console.log(`Arch = ${process.arch}`)"
+          node -e "console.log('Platform = ' + process.platform)"
+          node -e "console.log('Arch = ' + process.arch)"
