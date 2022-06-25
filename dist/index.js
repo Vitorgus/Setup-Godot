@@ -49,22 +49,22 @@ function getGodot(version, mono) {
             return godotPath;
         }
         core.info(`Attempting to download ${godotLabel} headless for linux...`);
-        const godotFileName = getFileName(version, mono);
+        const godotDownloadFile = getFileName(version, mono);
         const baseUrl = "https://downloads.tuxfamily.org/godotengine";
         const monoUrl = mono ? "mono/" : "";
         const extension = process.platform === "win32" ? "exe.zip" : "zip";
-        const godotDownloadPath = yield tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotFileName}.${extension}`);
+        const godotDownloadPath = yield tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.${extension}`);
         core.info(`${godotLabel} donwload sucessfull!`);
         core.info(`Attempting to extract ${godotLabel}`);
         const godotExtractPath = yield tc.extractZip(godotDownloadPath);
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
         if (mono) {
-            yield io.mv(`${godotExtractPath}/${godotFileName}/${godotFileName}`, `${godotExtractPath}/${godotFileName}/godot`);
-            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion);
+            yield io.mv(`${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`, `${godotExtractPath}/${godotDownloadFile}/godot`);
+            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotDownloadFile}`, "godot", godotCacheVersion);
         }
         else {
-            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion);
+            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotDownloadFile}`, "godot", "godot", godotCacheVersion);
         }
         core.info(`${godotLabel} cached!`);
         return godotPath;
@@ -98,11 +98,11 @@ function getTemplates(version, mono) {
     });
 }
 exports.getTemplates = getTemplates;
-function getFileName(version, mono) {
+function getFileName(version, mono, monoFile = false) {
     const basePath = `Godot_v${version}-stable_`;
     const monoPath = mono ? "mono_" : "";
     const archPath = process.arch === "x64" ? "64" : "32";
-    const osPath = "linux_headless" + (mono ? "_" : ".");
+    const osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
     return basePath + monoPath + osPath + archPath;
 }
 
