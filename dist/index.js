@@ -34,11 +34,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getTemplates = exports.getGodot = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const tc = __importStar(__nccwpck_require__(784));
 const io = __importStar(__nccwpck_require__(436));
+const path_1 = __importDefault(__nccwpck_require__(622));
 function getGodot(version, mono) {
     return __awaiter(this, void 0, void 0, function* () {
         const godotLabel = "Godot " + version + (mono ? " Mono" : "");
@@ -91,7 +95,8 @@ function getTemplates(version, mono) {
             templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
             core.info(`${templatesLabel} cached!`);
         }
-        const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable${mono ? ".mono" : ""}`;
+        const basePath = process.platform === "win32" ? path_1.default.normalize(`${process.env.APPDATA}/Godot`) : path_1.default.normalize(`${process.env.HOME}/.local/share/godot`);
+        const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
         yield io.rmRF(templatesPath);
         yield io.cp(templatesCachePath, templatesPath, { recursive: true });
         core.info(`${templatesLabel} copied to folder ${templatesPath}!`);
@@ -102,7 +107,13 @@ function getFileName(version, mono, monoFile = false) {
     const basePath = `Godot_v${version}-stable_`;
     const monoPath = mono ? "mono_" : "";
     const archPath = process.arch === "x64" ? "64" : "32";
-    const osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
+    let osPath;
+    if (process.platform === "win32") {
+        osPath = "win";
+    }
+    else {
+        osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
+    }
     return basePath + monoPath + osPath + archPath;
 }
 
@@ -149,8 +160,8 @@ const get_tools_1 = __nccwpck_require__(705);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (process.platform !== "linux") {
-                throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
+            if (process.platform === "darwin") {
+                throw Error(`Setup Godot is not yet supported on mac os runners`);
             }
             const godotVersion = core.getInput("godot-version", { required: true });
             const isMono = core.getBooleanInput("mono", { required: false });

@@ -3,8 +3,8 @@ import { getGodot, getTemplates } from "./get-tools";
 
 export async function run(): Promise<void> {
   try {
-    if (process.platform !== "linux") {
-      throw Error(`Setup Godot is only available for linux runners. Current platform: ${process.platform}`);
+    if (process.platform === "darwin") {
+      throw Error(`Setup Godot is not yet supported on mac os runners`);
     }
 
     const godotVersion: string = core.getInput("godot-version", { required: true });
