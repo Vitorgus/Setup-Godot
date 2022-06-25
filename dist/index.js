@@ -8,7 +8,11 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -95,7 +99,9 @@ function getTemplates(version, mono) {
             templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
             core.info(`${templatesLabel} cached!`);
         }
-        const basePath = process.platform === "win32" ? path_1.default.normalize(`${process.env.APPDATA}/Godot`) : path_1.default.normalize(`${process.env.HOME}/.local/share/godot`);
+        const basePath = process.platform === "win32"
+            ? path_1.default.normalize(`${process.env.APPDATA}/Godot`)
+            : path_1.default.normalize(`${process.env.HOME}/.local/share/godot`);
         const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
         yield io.rmRF(templatesPath);
         yield io.cp(templatesCachePath, templatesPath, { recursive: true });
@@ -127,7 +133,11 @@ function getFileName(version, mono, monoFile = false) {
 
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];

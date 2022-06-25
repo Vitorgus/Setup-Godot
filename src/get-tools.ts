@@ -22,7 +22,9 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   const monoUrl = mono ? "mono/" : "";
   const extension = process.platform === "win32" ? "exe.zip" : "zip";
 
-  const godotDownloadPath = await tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.${extension}`);
+  const godotDownloadPath = await tc.downloadTool(
+    `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.${extension}`
+  );
   core.info(`${godotLabel} donwload sucessfull!`);
 
   core.info(`Attempting to extract ${godotLabel}`);
@@ -31,10 +33,22 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
 
   core.info("Adding to cache...");
   if (mono) {
-    await io.mv(`${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`, `${godotExtractPath}/${godotDownloadFile}/godot`);
-    godotPath = await tc.cacheDir(`${godotExtractPath}/${godotDownloadFile}`, "godot", godotCacheVersion);
+    await io.mv(
+      `${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`,
+      `${godotExtractPath}/${godotDownloadFile}/godot`
+    );
+    godotPath = await tc.cacheDir(
+      `${godotExtractPath}/${godotDownloadFile}`,
+      "godot",
+      godotCacheVersion
+    );
   } else {
-    godotPath = await tc.cacheFile(`${godotExtractPath}/${godotDownloadFile}`, "godot", "godot", godotCacheVersion);
+    godotPath = await tc.cacheFile(
+      `${godotExtractPath}/${godotDownloadFile}`,
+      "godot",
+      "godot",
+      godotCacheVersion
+    );
   }
 
   core.info(`${godotLabel} cached!`);
@@ -55,7 +69,9 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
 
     core.info(`Attempting to download ${templatesLabel} export templates...`);
     const templatesDownloadPath = await tc.downloadTool(
-      `https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`
+      `https://downloads.tuxfamily.org/godotengine/${version}/${
+        mono ? "mono/" : ""
+      }${templatesFileName}.tpz`
     );
     core.info(`${templatesLabel} donwload sucessfull!`);
 
@@ -64,11 +80,18 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
     core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
 
     core.info("Adding to cache...");
-    templatesCachePath = await tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
+    templatesCachePath = await tc.cacheDir(
+      `${templatesExtractPath}/templates`,
+      "godot-export-templates",
+      tenplatesCacheVersion
+    );
     core.info(`${templatesLabel} cached!`);
   }
 
-  const basePath = process.platform === "win32" ? path.normalize(`${process.env.APPDATA}/Godot`) : path.normalize(`${process.env.HOME}/.local/share/godot`);
+  const basePath =
+    process.platform === "win32"
+      ? path.normalize(`${process.env.APPDATA}/Godot`)
+      : path.normalize(`${process.env.HOME}/.local/share/godot`);
   const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
 
   await io.rmRF(templatesPath);
