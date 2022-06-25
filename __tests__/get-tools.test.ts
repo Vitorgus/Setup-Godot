@@ -46,7 +46,7 @@ describe("getGodot tests", () => {
 
     const result = await getGodot("3.3.2", false);
 
-    expect(mockTcFind).toHaveBeenCalledWith("godot", "3.3.2", "linux");
+    expect(mockTcFind).toHaveBeenCalledWith("godot", "3.3.2");
     expect(result).toBe("/path/to/existing/cached/godot");
   });
 
@@ -59,8 +59,7 @@ describe("getGodot tests", () => {
     const result = await getGodot("3.1.1", false);
 
     expect(mockTcDownloadTool).toHaveBeenCalledWith("https://downloads.tuxfamily.org/godotengine/3.1.1/Godot_v3.1.1-stable_linux_headless.64.zip");
-    // expect(mockTcExtrackZip).toHaveBeenCalledWith("/path/to/downloaded/godot", undefined);
-    expect(mockTcCacheFile).toHaveBeenCalledWith("/path/to/extracted/godot/Godot_v3.1.1-stable_linux_headless.64", "godot", "godot", "3.1.1", "linux");
+    expect(mockTcCacheFile).toHaveBeenCalledWith("/path/to/extracted/godot/Godot_v3.1.1-stable_linux_headless.64", "godot", "godot", "3.1.1");
     expect(result).toBe("/path/to/cached/godot");
   });
 
@@ -69,7 +68,7 @@ describe("getGodot tests", () => {
 
     const result = await getGodot("3.2.3", true);
 
-    expect(mockTcFind).toHaveBeenCalledWith("godot", "3.2.3-mono", "linux");
+    expect(mockTcFind).toHaveBeenCalledWith("godot", "3.2.3-mono");
     expect(result).toBe("/path/to/existing/cached/godot-mono");
   });
 
@@ -82,12 +81,11 @@ describe("getGodot tests", () => {
     const result = await getGodot("3.3.3", true);
 
     expect(mockTcDownloadTool).toHaveBeenCalledWith("https://downloads.tuxfamily.org/godotengine/3.3.3/mono/Godot_v3.3.3-stable_mono_linux_headless_64.zip");
-    // expect(mockTcExtrackZip).toHaveBeenCalledWith("/path/to/downloaded/godot-mono", undefined);
     expect(mockIoMv).toHaveBeenCalledWith(
       "/path/to/extracted/godot-mono/Godot_v3.3.3-stable_mono_linux_headless_64/Godot_v3.3.3-stable_mono_linux_headless.64",
       "/path/to/extracted/godot-mono/Godot_v3.3.3-stable_mono_linux_headless_64/godot"
     );
-    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-mono/Godot_v3.3.3-stable_mono_linux_headless_64", "godot", "3.3.3-mono", "linux");
+    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-mono/Godot_v3.3.3-stable_mono_linux_headless_64", "godot", "3.3.3-mono");
     expect(result).toBe("/path/to/cached/godot-mono");
   });
 });
@@ -98,7 +96,7 @@ describe("getTemplates tests", () => {
 
     await getTemplates("3.3.2", false);
 
-    expect(mockTcFind).toHaveBeenCalledWith("godot-export-templates", "3.3.2", "linux");
+    expect(mockTcFind).toHaveBeenCalledWith("godot-export-templates", "3.3.2");
     expect(mockIoRmRF).toHaveBeenCalledWith("/home/runner/.local/share/godot/templates/3.3.2.stable");
     const cpOptions = { recursive: true };
     expect(mockIoCp).toHaveBeenCalledWith("/path/to/existing/cached/godot-templates", "/home/runner/.local/share/godot/templates/3.3.2.stable", cpOptions);
@@ -113,8 +111,7 @@ describe("getTemplates tests", () => {
     await getTemplates("3.1.1", false);
 
     expect(mockTcDownloadTool).toHaveBeenCalledWith("https://downloads.tuxfamily.org/godotengine/3.1.1/Godot_v3.1.1-stable_export_templates.tpz");
-    // expect(mockTcExtrackZip).toHaveBeenCalledWith("/path/to/downloaded/godot-templates", undefined);
-    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-templates/templates", "godot-export-templates", "3.1.1", "linux");
+    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-templates/templates", "godot-export-templates", "3.1.1");
     expect(mockIoRmRF).toHaveBeenCalledWith("/home/runner/.local/share/godot/templates/3.1.1.stable");
     const cpOptions = { recursive: true };
     expect(mockIoCp).toHaveBeenCalledWith("/path/to/cached/godot-templates", "/home/runner/.local/share/godot/templates/3.1.1.stable", cpOptions);
@@ -125,7 +122,7 @@ describe("getTemplates tests", () => {
 
     await getTemplates("3.2.3", true);
 
-    expect(mockTcFind).toHaveBeenCalledWith("godot-export-templates", "3.2.3-mono", "linux");
+    expect(mockTcFind).toHaveBeenCalledWith("godot-export-templates", "3.2.3-mono");
     expect(mockIoRmRF).toHaveBeenCalledWith("/home/runner/.local/share/godot/templates/3.2.3.stable.mono");
     const cpOptions = { recursive: true };
     expect(mockIoCp).toHaveBeenCalledWith(
@@ -144,8 +141,7 @@ describe("getTemplates tests", () => {
     await getTemplates("3.3.3", true);
 
     expect(mockTcDownloadTool).toHaveBeenCalledWith("https://downloads.tuxfamily.org/godotengine/3.3.3/mono/Godot_v3.3.3-stable_mono_export_templates.tpz");
-    // expect(mockTcExtrackZip).toHaveBeenCalledWith("/path/to/downloaded/godot-mono-templates", undefined);
-    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-mono-templates/templates", "godot-export-templates", "3.3.3-mono", "linux");
+    expect(mockTcCacheDir).toHaveBeenCalledWith("/path/to/extracted/godot-mono-templates/templates", "godot-export-templates", "3.3.3-mono");
     expect(mockIoRmRF).toHaveBeenCalledWith("/home/runner/.local/share/godot/templates/3.3.3.stable.mono");
     const cpOptions = { recursive: true };
     expect(mockIoCp).toHaveBeenCalledWith("/path/to/cached/godot-mono-templates", "/home/runner/.local/share/godot/templates/3.3.3.stable.mono", cpOptions);

@@ -6,7 +6,7 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   const godotLabel = "Godot " + version + (mono ? " Mono" : "");
   const godotCacheVersion = version + (mono ? "-mono" : "");
 
-  let godotPath = tc.find("godot", godotCacheVersion, process.platform);
+  let godotPath = tc.find("godot", godotCacheVersion);
 
   if (godotPath) {
     core.info(`${godotLabel} found in cache! Path: ${godotPath}`);
@@ -21,15 +21,15 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   core.info(`${godotLabel} donwload sucessfull!`);
 
   core.info(`Attempting to extract ${godotLabel}`);
-  const godotExtractPath = await tc.extractZip(godotDownloadPath, undefined);
+  const godotExtractPath = await tc.extractZip(godotDownloadPath);
   core.info(`${godotLabel} extracted to ${godotExtractPath}`);
 
   core.info("Adding to cache...");
   if (mono) {
     await io.mv(`${godotExtractPath}/${godotFileName}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/${godotFileName}/godot`);
-    godotPath = await tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion, process.platform);
+    godotPath = await tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion);
   } else {
-    godotPath = await tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+    godotPath = await tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion);
   }
 
   core.info(`${godotLabel} cached!`);
@@ -41,7 +41,7 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
   const templatesLabel = "Export Templates for " + version + (mono ? " Mono" : "");
   const tenplatesCacheVersion = version + (mono ? "-mono" : "");
 
-  let templatesCachePath = tc.find("godot-export-templates", tenplatesCacheVersion, process.platform);
+  let templatesCachePath = tc.find("godot-export-templates", tenplatesCacheVersion);
 
   if (templatesCachePath) {
     core.info(`${templatesLabel} found in cache! Path: ${templatesCachePath}`);
@@ -55,11 +55,11 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
     core.info(`${templatesLabel} donwload sucessfull!`);
 
     core.info(`Attempting to extract ${templatesLabel}`);
-    const templatesExtractPath = await tc.extractZip(templatesDownloadPath, undefined);
+    const templatesExtractPath = await tc.extractZip(templatesDownloadPath);
     core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
 
     core.info("Adding to cache...");
-    templatesCachePath = await tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion, process.platform);
+    templatesCachePath = await tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
     core.info(`${templatesLabel} cached!`);
   }
 

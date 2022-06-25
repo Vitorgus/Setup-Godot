@@ -43,7 +43,7 @@ function getGodot(version, mono) {
     return __awaiter(this, void 0, void 0, function* () {
         const godotLabel = "Godot " + version + (mono ? " Mono" : "");
         const godotCacheVersion = version + (mono ? "-mono" : "");
-        let godotPath = tc.find("godot", godotCacheVersion, process.platform);
+        let godotPath = tc.find("godot", godotCacheVersion);
         if (godotPath) {
             core.info(`${godotLabel} found in cache! Path: ${godotPath}`);
             return godotPath;
@@ -53,15 +53,15 @@ function getGodot(version, mono) {
         const godotDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${godotFileName}.zip`);
         core.info(`${godotLabel} donwload sucessfull!`);
         core.info(`Attempting to extract ${godotLabel}`);
-        const godotExtractPath = yield tc.extractZip(godotDownloadPath, undefined);
+        const godotExtractPath = yield tc.extractZip(godotDownloadPath);
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
         if (mono) {
             yield io.mv(`${godotExtractPath}/${godotFileName}/Godot_v${version}-stable_mono_linux_headless.64`, `${godotExtractPath}/${godotFileName}/godot`);
-            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion, process.platform);
+            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotFileName}`, "godot", godotCacheVersion);
         }
         else {
-            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion, process.platform);
+            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotFileName}`, "godot", "godot", godotCacheVersion);
         }
         core.info(`${godotLabel} cached!`);
         return godotPath;
@@ -72,7 +72,7 @@ function getTemplates(version, mono) {
     return __awaiter(this, void 0, void 0, function* () {
         const templatesLabel = "Export Templates for " + version + (mono ? " Mono" : "");
         const tenplatesCacheVersion = version + (mono ? "-mono" : "");
-        let templatesCachePath = tc.find("godot-export-templates", tenplatesCacheVersion, process.platform);
+        let templatesCachePath = tc.find("godot-export-templates", tenplatesCacheVersion);
         if (templatesCachePath) {
             core.info(`${templatesLabel} found in cache! Path: ${templatesCachePath}`);
         }
@@ -82,10 +82,10 @@ function getTemplates(version, mono) {
             const templatesDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`);
             core.info(`${templatesLabel} donwload sucessfull!`);
             core.info(`Attempting to extract ${templatesLabel}`);
-            const templatesExtractPath = yield tc.extractZip(templatesDownloadPath, undefined);
+            const templatesExtractPath = yield tc.extractZip(templatesDownloadPath);
             core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
             core.info("Adding to cache...");
-            templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion, process.platform);
+            templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
             core.info(`${templatesLabel} cached!`);
         }
         const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable${mono ? ".mono" : ""}`;
