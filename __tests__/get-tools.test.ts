@@ -7,38 +7,15 @@ jest.mock("@actions/core");
 jest.mock("@actions/tool-cache");
 jest.mock("@actions/io");
 
-type MockedTcFind = jest.MockedFunction<typeof tc.find>;
-type MockedTcDownloadTool = jest.MockedFunction<typeof tc.downloadTool>;
-type MockedTcExtractZip = jest.MockedFunction<typeof tc.extractZip>;
-type MockedTcCacheFile = jest.MockedFunction<typeof tc.cacheFile>;
-type MockedTcCacheDir = jest.MockedFunction<typeof tc.cacheDir>;
+const mockTcFind = jest.mocked(tc.find);
+const mockTcDownloadTool = jest.mocked(tc.downloadTool);
+const mockTcExtrackZip = jest.mocked(tc.extractZip);
+const mockTcCacheFile = jest.mocked(tc.cacheFile);
+const mockTcCacheDir = jest.mocked(tc.cacheDir);
 
-type MockedIoMv = jest.MockedFunction<typeof io.mv>;
-type MockedIoRmRF = jest.MockedFunction<typeof io.rmRF>;
-type MockedIoCp = jest.MockedFunction<typeof io.cp>;
-
-let mockTcFind: MockedTcFind;
-let mockTcDownloadTool: MockedTcDownloadTool;
-let mockTcExtrackZip: MockedTcExtractZip;
-let mockTcCacheFile: MockedTcCacheFile;
-let mockTcCacheDir: MockedTcCacheDir;
-
-let mockIoMv: MockedIoMv;
-let mockIoRmRF: MockedIoRmRF;
-let mockIoCp: MockedIoCp;
-
-beforeAll(() => {
-  // process.env['GITHUB_PATH'] = ''; // Stub out ENV file functionality so we can verify it writes to standard out
-
-  mockTcFind = tc.find as MockedTcFind;
-  mockTcDownloadTool = tc.downloadTool as MockedTcDownloadTool;
-  mockTcExtrackZip = tc.extractZip as MockedTcExtractZip;
-  mockTcCacheFile = tc.cacheFile as MockedTcCacheFile;
-  mockTcCacheDir = tc.cacheDir as MockedTcCacheDir;
-  mockIoMv = io.mv as MockedIoMv;
-  mockIoRmRF = io.rmRF as MockedIoRmRF;
-  mockIoCp = io.cp as MockedIoCp;
-});
+const mockIoMv = jest.mocked(io.mv);
+const mockIoRmRF = jest.mocked(io.rmRF);
+const mockIoCp = jest.mocked(io.cp);
 
 describe("getGodot tests", () => {
   test("Cache test standard", async () => {

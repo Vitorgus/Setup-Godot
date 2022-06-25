@@ -15,35 +15,20 @@ interface InputsInterface {
   [name: string]: string | boolean;
 }
 
-type MockedCoreGetInput = jest.MockedFunction<typeof core.getInput>;
-type MockedCoreGetBooleanInput = jest.MockedFunction<typeof core.getBooleanInput>;
-type MockedCoreSetFailed = jest.MockedFunction<typeof core.setFailed>;
-
-type MockedGetGodot = jest.MockedFunction<typeof getGodot>;
-
 let input: InputsInterface;
 
-let mockCoreGetInput: MockedCoreGetInput;
-let mockCoreGetBooleanInput: MockedCoreGetBooleanInput;
-let mockedCoreSetFailed: MockedCoreSetFailed;
+const mockCoreGetInput = jest.mocked(core.getInput);
+const mockCoreGetBooleanInput = jest.mocked(core.getBooleanInput);
+const mockedCoreSetFailed = jest.mocked(core.setFailed);
 
-let mockGetGodot: MockedGetGodot;
+const mockGetGodot = jest.mocked(getGodot);
 
 beforeAll(() => {
-  // process.env['GITHUB_PATH'] = ''; // Stub out ENV file functionality so we can verify it writes to standard out
-
-  mockCoreGetInput = core.getInput as MockedCoreGetInput;
   mockCoreGetInput.mockImplementation(name => input[name] as string);
-
-  mockCoreGetBooleanInput = core.getBooleanInput as MockedCoreGetBooleanInput;
   mockCoreGetBooleanInput.mockImplementation(name => input[name] as boolean);
-
-  mockedCoreSetFailed = core.setFailed as MockedCoreSetFailed;
-
-  // prettier-ignore
-  mockedCoreSetFailed.mockImplementation(e => { throw new Error(e as string) }); // eslint-disable-line @typescript-eslint/semi
-
-  mockGetGodot = getGodot as MockedGetGodot;
+  mockedCoreSetFailed.mockImplementation(e => {
+    throw new Error(e as string);
+  });
 });
 
 beforeEach(() => {

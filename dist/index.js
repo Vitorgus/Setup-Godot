@@ -102,7 +102,7 @@ function getTemplates(version, mono) {
         const basePath = process.platform === "win32"
             ? path_1.default.normalize(`${process.env.APPDATA}/Godot`)
             : path_1.default.normalize(`${process.env.HOME}/.local/share/godot`);
-        const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
+        const templatesPath = `${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`;
         yield io.rmRF(templatesPath);
         yield io.cp(templatesCachePath, templatesPath, { recursive: true });
         core.info(`${templatesLabel} copied to folder ${templatesPath}!`);
