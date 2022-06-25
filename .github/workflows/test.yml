@@ -18,21 +18,24 @@ jobs:
       - run: |
           npm run all
   test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Run test
         uses: ./
         with:
-          godot-version: 3.3.3
+          godot-version: 3.4.4
       - name: Cache test
         uses: ./
         with:
-          godot-version: 3.3.3
+          godot-version: 3.4.4
       - run: godot --test 'string'
       - name: Mono test
         uses: ./
         with:
-          godot-version: 3.3.3
+          godot-version: 3.4.4
           mono: true
       - run: godot --test 'string'
