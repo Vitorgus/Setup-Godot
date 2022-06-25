@@ -92,7 +92,7 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
     process.platform === "win32"
       ? path.normalize(`${process.env.APPDATA}/Godot`)
       : path.normalize(`${process.env.HOME}/.local/share/godot`);
-  const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
+  const templatesPath = `${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`;
 
   await io.rmRF(templatesPath);
   await io.cp(templatesCachePath, templatesPath, { recursive: true });
