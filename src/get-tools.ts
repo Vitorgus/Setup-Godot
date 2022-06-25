@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 import * as io from "@actions/io";
+import path from "path";
 
 export async function getGodot(version: string, mono: boolean): Promise<string> {
   const godotLabel = "Godot " + version + (mono ? " Mono" : "");
@@ -67,7 +68,8 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
     core.info(`${templatesLabel} cached!`);
   }
 
-  const templatesPath = `/home/runner/.local/share/godot/templates/${version}.stable${mono ? ".mono" : ""}`;
+  const basePath = process.platform === "win32" ? path.normalize(`${process.env.APPDATA}/Godot`) : path.normalize(`${process.env.HOME}/.local/share/godot`);
+  const templatesPath = `${basePath}/${version}.stable${mono ? ".mono" : ""}`;
 
   await io.rmRF(templatesPath);
   await io.cp(templatesCachePath, templatesPath, { recursive: true });
@@ -79,7 +81,14 @@ function getFileName(version: string, mono: boolean, monoFile = false): string {
   const basePath = `Godot_v${version}-stable_`;
   const monoPath = mono ? "mono_" : "";
   const archPath = process.arch === "x64" ? "64" : "32";
-  const osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
+
+  let osPath: string;
+
+  if (process.platform === "win32") {
+    osPath = "win";
+  } else {
+    osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
+  }
 
   return basePath + monoPath + osPath + archPath;
 }
