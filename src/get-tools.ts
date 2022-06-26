@@ -14,19 +14,19 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
     return godotPath;
   }
 
-  core.info(`Attempting to download ${godotLabel} for ${process.platform}...`);
+  const platformTag = process.platform === "win32" ? "windows" : "linux";
 
   const godotDownloadFile = getFileName(version, mono);
 
   const baseUrl = "https://downloads.tuxfamily.org/godotengine";
   const monoUrl = mono ? "mono/" : "";
+  const downloadUrl = `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`;
 
-  const godotDownloadPath = await tc.downloadTool(
-    `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`
-  );
-  core.info(`${godotLabel} donwload sucessfull!`);
+  core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}...`);
+  const godotDownloadPath = await tc.downloadTool(downloadUrl);
+  core.info(`${godotLabel} donwloaded sucessfully!`);
 
-  core.info(`Attempting to extract ${godotLabel}`);
+  core.info(`Attempting to extract ${godotLabel}...`);
   const godotExtractPath = await tc.extractZip(godotDownloadPath);
   core.info(`${godotLabel} extracted to ${godotExtractPath}`);
 
@@ -68,13 +68,13 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
   } else {
     const templatesFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}export_templates`;
 
-    core.info(`Attempting to download ${templatesLabel} export templates...`);
-    const templatesDownloadPath = await tc.downloadTool(
-      `https://downloads.tuxfamily.org/godotengine/${version}/${
-        mono ? "mono/" : ""
-      }${templatesFileName}.tpz`
-    );
-    core.info(`${templatesLabel} donwload sucessfull!`);
+    const downloadUrl = `https://downloads.tuxfamily.org/godotengine/${version}/${
+      mono ? "mono/" : ""
+    }${templatesFileName}.tpz`;
+
+    core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}...`);
+    const templatesDownloadPath = await tc.downloadTool(downloadUrl);
+    core.info(`${templatesLabel} donwloaded sucessfully!`);
 
     core.info(`Attempting to extract ${templatesLabel}`);
     const templatesExtractPath = await tc.extractZip(templatesDownloadPath);

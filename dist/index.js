@@ -56,13 +56,15 @@ function getGodot(version, mono) {
             core.info(`${godotLabel} found in cache! Path: ${godotPath}`);
             return godotPath;
         }
-        core.info(`Attempting to download ${godotLabel} for ${process.platform}...`);
+        const platformTag = process.platform === "win32" ? "windows" : "linux";
         const godotDownloadFile = getFileName(version, mono);
         const baseUrl = "https://downloads.tuxfamily.org/godotengine";
         const monoUrl = mono ? "mono/" : "";
-        const godotDownloadPath = yield tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`);
-        core.info(`${godotLabel} donwload sucessfull!`);
-        core.info(`Attempting to extract ${godotLabel}`);
+        const downloadUrl = `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`;
+        core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}...`);
+        const godotDownloadPath = yield tc.downloadTool(downloadUrl);
+        core.info(`${godotLabel} donwloaded sucessfully!`);
+        core.info(`Attempting to extract ${godotLabel}...`);
         const godotExtractPath = yield tc.extractZip(godotDownloadPath);
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
@@ -88,9 +90,10 @@ function getTemplates(version, mono) {
         }
         else {
             const templatesFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}export_templates`;
-            core.info(`Attempting to download ${templatesLabel} export templates...`);
-            const templatesDownloadPath = yield tc.downloadTool(`https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`);
-            core.info(`${templatesLabel} donwload sucessfull!`);
+            const downloadUrl = `https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`;
+            core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}...`);
+            const templatesDownloadPath = yield tc.downloadTool(downloadUrl);
+            core.info(`${templatesLabel} donwloaded sucessfully!`);
             core.info(`Attempting to extract ${templatesLabel}`);
             const templatesExtractPath = yield tc.extractZip(templatesDownloadPath);
             core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
