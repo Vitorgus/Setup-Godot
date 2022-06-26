@@ -107,7 +107,7 @@ function getFileName(version: string, mono: boolean, monoFile = false): string {
   const basePath = `Godot_v${version}-stable_`;
   const monoPath = mono ? "mono_" : "";
   const archPath = process.arch === "x64" ? "64" : "32";
-  const winExeExtension = process.platform === "win32" && !mono ? ".exe" : "";
+  const winExeExtension = process.platform === "win32" && (!mono || monoFile) ? ".exe" : "";
 
   let osPath: string;
 
