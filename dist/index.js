@@ -56,7 +56,7 @@ function getGodot(version, mono) {
             core.info(`${godotLabel} found in cache! Path: ${godotPath}`);
             return godotPath;
         }
-        core.info(`Attempting to download ${godotLabel} headless for linux...`);
+        core.info(`Attempting to download ${godotLabel} for ${process.platform}...`);
         const godotDownloadFile = getFileName(version, mono);
         const baseUrl = "https://downloads.tuxfamily.org/godotengine";
         const monoUrl = mono ? "mono/" : "";
@@ -68,11 +68,11 @@ function getGodot(version, mono) {
         core.info(`${godotLabel} extracted to ${godotExtractPath}`);
         core.info("Adding to cache...");
         if (mono) {
-            yield io.mv(`${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`, `${godotExtractPath}/${godotDownloadFile}/godot`);
-            godotPath = yield tc.cacheDir(`${godotExtractPath}/${godotDownloadFile}`, "godot", godotCacheVersion);
+            yield io.mv(path_1.default.normalize(`${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`), path_1.default.normalize(`${godotExtractPath}/${godotDownloadFile}/godot`));
+            godotPath = yield tc.cacheDir(path_1.default.normalize(`${godotExtractPath}/${godotDownloadFile}`), "godot", godotCacheVersion);
         }
         else {
-            godotPath = yield tc.cacheFile(`${godotExtractPath}/${godotDownloadFile}`, "godot", "godot", godotCacheVersion);
+            godotPath = yield tc.cacheFile(path_1.default.normalize(`${godotExtractPath}/${godotDownloadFile}`), "godot", "godot", godotCacheVersion);
         }
         core.info(`${godotLabel} cached!`);
         return godotPath;
@@ -96,13 +96,13 @@ function getTemplates(version, mono) {
             const templatesExtractPath = yield tc.extractZip(templatesDownloadPath);
             core.info(`${templatesLabel} extracted to ${templatesExtractPath}`);
             core.info("Adding to cache...");
-            templatesCachePath = yield tc.cacheDir(`${templatesExtractPath}/templates`, "godot-export-templates", tenplatesCacheVersion);
+            templatesCachePath = yield tc.cacheDir(path_1.default.normalize(`${templatesExtractPath}/templates`), "godot-export-templates", tenplatesCacheVersion);
             core.info(`${templatesLabel} cached!`);
         }
         const basePath = process.platform === "win32"
-            ? path_1.default.normalize(`${process.env.APPDATA}/Godot`)
-            : path_1.default.normalize(`${process.env.HOME}/.local/share/godot`);
-        const templatesPath = `${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`;
+            ? `${process.env.APPDATA}/Godot`
+            : `${process.env.HOME}/.local/share/godot`;
+        const templatesPath = path_1.default.normalize(`${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`);
         yield io.rmRF(templatesPath);
         yield io.cp(templatesCachePath, templatesPath, { recursive: true });
         core.info(`${templatesLabel} copied to folder ${templatesPath}!`);

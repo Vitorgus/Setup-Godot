@@ -14,7 +14,7 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
     return godotPath;
   }
 
-  core.info(`Attempting to download ${godotLabel} headless for linux...`);
+  core.info(`Attempting to download ${godotLabel} for ${process.platform}...`);
 
   const godotDownloadFile = getFileName(version, mono);
 
@@ -34,17 +34,19 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   core.info("Adding to cache...");
   if (mono) {
     await io.mv(
-      `${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`,
-      `${godotExtractPath}/${godotDownloadFile}/godot`
+      path.normalize(
+        `${godotExtractPath}/${godotDownloadFile}/${getFileName(version, mono, true)}`
+      ),
+      path.normalize(`${godotExtractPath}/${godotDownloadFile}/godot`)
     );
     godotPath = await tc.cacheDir(
-      `${godotExtractPath}/${godotDownloadFile}`,
+      path.normalize(`${godotExtractPath}/${godotDownloadFile}`),
       "godot",
       godotCacheVersion
     );
   } else {
     godotPath = await tc.cacheFile(
-      `${godotExtractPath}/${godotDownloadFile}`,
+      path.normalize(`${godotExtractPath}/${godotDownloadFile}`),
       "godot",
       "godot",
       godotCacheVersion
@@ -81,7 +83,7 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
 
     core.info("Adding to cache...");
     templatesCachePath = await tc.cacheDir(
-      `${templatesExtractPath}/templates`,
+      path.normalize(`${templatesExtractPath}/templates`),
       "godot-export-templates",
       tenplatesCacheVersion
     );
@@ -90,9 +92,11 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
 
   const basePath =
     process.platform === "win32"
-      ? path.normalize(`${process.env.APPDATA}/Godot`)
-      : path.normalize(`${process.env.HOME}/.local/share/godot`);
-  const templatesPath = `${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`;
+      ? `${process.env.APPDATA}/Godot`
+      : `${process.env.HOME}/.local/share/godot`;
+  const templatesPath = path.normalize(
+    `${basePath}/templates/${version}.stable${mono ? ".mono" : ""}`
+  );
 
   await io.rmRF(templatesPath);
   await io.cp(templatesCachePath, templatesPath, { recursive: true });
