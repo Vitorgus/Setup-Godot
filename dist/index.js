@@ -61,7 +61,7 @@ function getGodot(version, mono) {
         const baseUrl = "https://downloads.tuxfamily.org/godotengine";
         const monoUrl = mono ? "mono/" : "";
         const downloadUrl = `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`;
-        core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}...`);
+        core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}`);
         const godotDownloadPath = yield tc.downloadTool(downloadUrl);
         core.info(`${godotLabel} donwloaded sucessfully!`);
         core.info(`Attempting to extract ${godotLabel}...`);
@@ -91,7 +91,7 @@ function getTemplates(version, mono) {
         else {
             const templatesFileName = `Godot_v${version}-stable_${mono ? "mono_" : ""}export_templates`;
             const downloadUrl = `https://downloads.tuxfamily.org/godotengine/${version}/${mono ? "mono/" : ""}${templatesFileName}.tpz`;
-            core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}...`);
+            core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}`);
             const templatesDownloadPath = yield tc.downloadTool(downloadUrl);
             core.info(`${templatesLabel} donwloaded sucessfully!`);
             core.info(`Attempting to extract ${templatesLabel}`);
@@ -115,6 +115,7 @@ function getFileName(version, mono, monoFile = false) {
     const basePath = `Godot_v${version}-stable_`;
     const monoPath = mono ? "mono_" : "";
     const archPath = process.arch === "x64" ? "64" : "32";
+    const winExeExtension = process.platform === "win32" && !mono ? ".exe" : "";
     let osPath;
     if (process.platform === "win32") {
         osPath = "win";
@@ -122,7 +123,7 @@ function getFileName(version, mono, monoFile = false) {
     else {
         osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
     }
-    return basePath + monoPath + osPath + archPath + (process.platform === "win32" ? ".exe" : "");
+    return basePath + monoPath + osPath + archPath + winExeExtension;
 }
 
 

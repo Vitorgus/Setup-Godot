@@ -22,7 +22,7 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
   const monoUrl = mono ? "mono/" : "";
   const downloadUrl = `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`;
 
-  core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}...`);
+  core.info(`Attempting to download ${godotLabel} for ${platformTag} from ${downloadUrl}`);
   const godotDownloadPath = await tc.downloadTool(downloadUrl);
   core.info(`${godotLabel} donwloaded sucessfully!`);
 
@@ -72,7 +72,7 @@ export async function getTemplates(version: string, mono: boolean): Promise<void
       mono ? "mono/" : ""
     }${templatesFileName}.tpz`;
 
-    core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}...`);
+    core.info(`Attempting to download ${templatesLabel} export templates from ${downloadUrl}`);
     const templatesDownloadPath = await tc.downloadTool(downloadUrl);
     core.info(`${templatesLabel} donwloaded sucessfully!`);
 
@@ -107,6 +107,7 @@ function getFileName(version: string, mono: boolean, monoFile = false): string {
   const basePath = `Godot_v${version}-stable_`;
   const monoPath = mono ? "mono_" : "";
   const archPath = process.arch === "x64" ? "64" : "32";
+  const winExeExtension = process.platform === "win32" && !mono ? ".exe" : "";
 
   let osPath: string;
 
@@ -116,5 +117,5 @@ function getFileName(version: string, mono: boolean, monoFile = false): string {
     osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
   }
 
-  return basePath + monoPath + osPath + archPath + (process.platform === "win32" ? ".exe" : "");
+  return basePath + monoPath + osPath + archPath + winExeExtension;
 }
