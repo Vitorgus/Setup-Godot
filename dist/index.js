@@ -60,8 +60,7 @@ function getGodot(version, mono) {
         const godotDownloadFile = getFileName(version, mono);
         const baseUrl = "https://downloads.tuxfamily.org/godotengine";
         const monoUrl = mono ? "mono/" : "";
-        const extension = process.platform === "win32" ? "exe.zip" : "zip";
-        const godotDownloadPath = yield tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.${extension}`);
+        const godotDownloadPath = yield tc.downloadTool(`${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`);
         core.info(`${godotLabel} donwload sucessfull!`);
         core.info(`Attempting to extract ${godotLabel}`);
         const godotExtractPath = yield tc.extractZip(godotDownloadPath);
@@ -120,7 +119,7 @@ function getFileName(version, mono, monoFile = false) {
     else {
         osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
     }
-    return basePath + monoPath + osPath + archPath;
+    return basePath + monoPath + osPath + archPath + (process.platform === "win32" ? ".exe" : "");
 }
 
 

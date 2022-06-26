@@ -20,10 +20,9 @@ export async function getGodot(version: string, mono: boolean): Promise<string> 
 
   const baseUrl = "https://downloads.tuxfamily.org/godotengine";
   const monoUrl = mono ? "mono/" : "";
-  const extension = process.platform === "win32" ? "exe.zip" : "zip";
 
   const godotDownloadPath = await tc.downloadTool(
-    `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.${extension}`
+    `${baseUrl}/${version}/${monoUrl}${godotDownloadFile}.zip`
   );
   core.info(`${godotLabel} donwload sucessfull!`);
 
@@ -117,5 +116,5 @@ function getFileName(version: string, mono: boolean, monoFile = false): string {
     osPath = "linux_headless" + (mono && !monoFile ? "_" : ".");
   }
 
-  return basePath + monoPath + osPath + archPath;
+  return basePath + monoPath + osPath + archPath + (process.platform === "win32" ? ".exe" : "");
 }
